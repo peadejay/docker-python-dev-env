@@ -1,0 +1,5 @@
+export PS1="\u@tupperware-pedro \w> "
+export TERM=screen-256color
+
+alias ll="ls -lhF"
+alias lla="ll -a"

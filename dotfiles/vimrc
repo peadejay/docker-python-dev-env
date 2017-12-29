@@ -1,0 +1,101 @@
+"==============================================================================
+" General
+"==============================================================================
+
+set number
+syntax on
+set nocompatible
+set colorcolumn=100
+set backspace=2
+set noswapfile
+
+"==============================================================================
+" TABS
+"==============================================================================
+
+filetype plugin indent on
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+"==============================================================================
+" Trailing Whitespace
+"==============================================================================
+
+fun! TrimTrailingWhitespace()
+    let l:save = winsaveview()
+    %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+autocmd BufWritePre *.py :call TrimTrailingWhitespace()
+
+"==============================================================================
+" VUNDLE 
+"==============================================================================
+
+" Check if Vundle is installed by trying to read its README
+let vundle_already_installed=1
+let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
+if !filereadable(vundle_readme)
+    echo "Installing Vundle..."
+    echo ""
+    silent !mkdir -p ~/.vim/bundle
+    silent !git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
+    let vundle_already_installed=0
+endif
+
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim/
+call vundle#begin()
+
+Plugin 'gmarik/vundle'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'tell-k/vim-autopep8'
+
+" If Vundle was just installed, install the plugins too
+if vundle_already_installed == 0
+    echo "Installing Plugins"
+    echo ""
+    :PluginInstall
+endif
+
+call vundle#end()
+
+filetype plugin indent on
+
+"==============================================================================
+" Solarized 
+"==============================================================================
+
+let g:solarized_termcolors = 256
+colorscheme solarized
+set background=light
+
+"==============================================================================
+" Airline
+"==============================================================================
+
+set laststatus=2
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='light'
+
+"==============================================================================
+" Syntastic
+"==============================================================================
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = ['pylint']
+
