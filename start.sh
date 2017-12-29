@@ -3,14 +3,16 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+set -euf
+
+IMAGE_NAME="python_dev_env"
+
 # Get the mount point and expand into absolute path
 MOUNT_POINT=$(readlink -f $1)
 echo "Using mount point: ${MOUNT_POINT}"
 
 # Ensure the mount point exists
 mkdir -p ${MOUNT_POINT}
-
-IMAGE_NAME="python_dev_env"
 
 if [[ "$(docker images -q ${IMAGE_NAME} 2> /dev/null)" == "" ]]; then
     echo "Image does not exist - building now..."
