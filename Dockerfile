@@ -18,5 +18,4 @@ COPY dotfiles/tmux.conf .tmux.conf
 # Install Python lint tools
 RUN pip install pylint autopep8
 
-# Run shell as user
 CMD ["/bin/bash"]
